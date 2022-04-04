@@ -34,9 +34,10 @@ class Request {
 		125001: 'Invalid token',
 		125003: 'Invalid token',
 	}
+	parser = new xml2js.Parser({ explicitArray: false })
 
 	async checkError(response) {
-		const obj = await xml2js.parseStringPromise(response)
+		const obj = await this.parser.parseStringPromise(response)
 
 		if (obj.error) {
 			const errorCode = obj.error.code[0]
@@ -55,8 +56,8 @@ class Request {
 		try {
 			const res = await axios.post(url, data, params)
 			await this.checkError(res.data)
-			const parseResponse = await xml2js.parseStringPromise(res.data)
-			return parseResponse
+			const parseResponse = await this.parser.parseStringPromise(res.data)
+			return parseResponse.response
 		} catch (error) {
 			throw error
 		}
@@ -66,8 +67,8 @@ class Request {
 		try {
 			const res = await axios.get(url, params)
 			await this.checkError(res.data)
-			const parseResponse = await xml2js.parseStringPromise(res.data)
-			return parseResponse
+			const parseResponse = await this.parser.parseStringPromise(res.data)
+			return parseResponse.response
 		} catch (error) {
 			throw error
 		}
