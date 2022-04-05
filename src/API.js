@@ -17,6 +17,7 @@ const Sdcard = require('./apis/Sdcard')
 const Security = require('./apis/Security')
 
 const SMS = require('./apis/Sms')
+const Sntp = require('./apis/Sntp')
 const Ussd = require('./apis/Ussd')
 const Request = require('./Request')
 
@@ -40,6 +41,7 @@ class API {
 	redirection = new Redirection(this)
 	sdCard = new Sdcard(this)
 	security = new Security(this)
+	sntp = new Sntp(this)
 
 	TokInfo = ''
 	SesInfo = ''
