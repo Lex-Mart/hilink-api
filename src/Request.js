@@ -34,15 +34,16 @@ class Request {
 		125001: 'Invalid token',
 		125003: 'Invalid token',
 	}
-	parser = new xml2js.Parser({ explicitArray: false })
+	xmlParser = new xml2js.Parser({ explicitArray: false })
+	xmlBuilder = new xml2js.Builder({ rootName: 'request' })
 
 	async checkError(response) {
-		const obj = await this.parser.parseStringPromise(response)
+		const obj = await this.xmlParser.parseStringPromise(response)
 
-		if (obj.error) {
-			const errorCode = obj.error.code[0]
+		if (obj?.error) {
+			const errorCode = obj.error.code
 			const codeDescription = this.errorCodes[errorCode] || ''
-			const message = obj.error.message[0] || ''
+			const message = obj.error.message
 
 			throw new Error(
 				`[${errorCode}]${codeDescription && ' ' + codeDescription}${
@@ -53,11 +54,13 @@ class Request {
 	}
 
 	async post(url, data, params = {}) {
+		const requestXMLString = this.xmlBuilder.buildObject(data)
+
 		try {
-			const res = await axios.post(url, data, params)
-			await this.checkError(res.data)
-			const parseResponse = await this.parser.parseStringPromise(res.data)
-			return parseResponse.response
+			const response = await axios.post(url, requestXMLString, params)
+			await this.checkError(response.data)
+			const parseResponse = await this.xmlParser.parseStringPromise(response.data)
+			return parseResponse?.response
 		} catch (error) {
 			throw error
 		}
@@ -65,10 +68,10 @@ class Request {
 
 	async get(url, params) {
 		try {
-			const res = await axios.get(url, params)
-			await this.checkError(res.data)
-			const parseResponse = await this.parser.parseStringPromise(res.data)
-			return parseResponse.response
+			const response = await axios.get(url, params)
+			await this.checkError(response.data)
+			const parseResponse = await this.xmlParser.parseStringPromise(response.data)
+			return parseResponse?.response
 		} catch (error) {
 			throw error
 		}
