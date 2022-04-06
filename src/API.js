@@ -18,7 +18,12 @@ const Security = require('./apis/Security')
 
 const SMS = require('./apis/Sms')
 const Sntp = require('./apis/Sntp')
+const Stk = require('./apis/Stk')
+const User = require('./apis/User')
 const Ussd = require('./apis/Ussd')
+const Voice = require('./apis/Voice')
+const WebServer = require('./apis/WebServer')
+const Wlan = require('./apis/Wlan')
 const Request = require('./Request')
 
 class API {
@@ -42,6 +47,11 @@ class API {
 	sdCard = new Sdcard(this)
 	security = new Security(this)
 	sntp = new Sntp(this)
+	stk = new Stk(this)
+	user = new User(this)
+	voice = new Voice(this)
+	webServer = new WebServer(this)
+	wlan = new Wlan(this)
 
 	TokInfo = ''
 	SesInfo = ''

@@ -1,10 +1,9 @@
-const API = require('./src/API')
+const HilinkAPI = require('./src')
 
 const start = async () => {
-	const api = new API('192.168.128.1')
-	await api.getTokens()
-	const res = await api.sms.splitInfoSms()
-	console.log(res)
+	const api = new HilinkAPI('192.168.128.1')
+	const res = await api.sms.smsList()
+	console.log(res.Messages)
 }
 
 start()
