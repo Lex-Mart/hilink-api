@@ -1,4 +1,6 @@
 const { join } = require('path')
+
+const Request = require('./Request')
 const Cradle = require('./apis/Cradle')
 const Device = require('./apis/Device')
 const Dhcp = require('./apis/Dhcp')
@@ -15,7 +17,6 @@ const Pin = require('./apis/Pin')
 const Redirection = require('./apis/Redirection')
 const Sdcard = require('./apis/Sdcard')
 const Security = require('./apis/Security')
-
 const SMS = require('./apis/Sms')
 const Sntp = require('./apis/Sntp')
 const Stk = require('./apis/Stk')
@@ -24,7 +25,6 @@ const Ussd = require('./apis/Ussd')
 const Voice = require('./apis/Voice')
 const WebServer = require('./apis/WebServer')
 const Wlan = require('./apis/Wlan')
-const Request = require('./Request')
 
 class API {
 	request = new Request()
@@ -61,8 +61,7 @@ class API {
 	}
 
 	async getTokens() {
-		const response = await this.request.get('http://192.168.128.1/api/webserver/SesTokInfo')
-
+		const response = await this.webServer.SesTokInfo()
 		this.SesInfo = response.SesInfo
 		this.TokInfo = response.TokInfo
 	}
